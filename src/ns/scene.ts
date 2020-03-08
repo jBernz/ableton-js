@@ -12,7 +12,7 @@ export interface GettableProperties {
   is_empty: boolean;
   is_triggered: boolean;
   name: string;
-  tempo: number;
+  status: string;
 }
 
 export interface TransformedProperties {
@@ -24,7 +24,6 @@ export interface SettableProperties {
   color: number;
   color_index: number;
   name: string;
-  tempo: number;
 }
 
 export interface ObservableProperties {
@@ -33,12 +32,14 @@ export interface ObservableProperties {
   color_index: number;
   is_triggered: boolean;
   name: string;
+  status: string;
 }
 
 export interface RawScene {
   color: number;
   id: number;
   name: string;
+  status: string;
 }
 
 export class Scene extends Namespace<
