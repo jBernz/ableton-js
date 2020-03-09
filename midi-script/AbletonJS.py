@@ -48,7 +48,7 @@ class AbletonJS(ControlSurface):
         self.schedule_message(1, self.parse)
 
     def command_handler(self, payload):
-        self.log_message("Received command: " + str(payload))
+        #self.log_message("Received command: " + str(payload))
         namespace = payload["ns"]
 
         if self.handlers.has_key(namespace):

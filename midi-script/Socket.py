@@ -47,8 +47,8 @@ class Socket(object):
         try:
             self._socket.sendto(json.dumps(
                 {"event": name, "data": obj, "uuid": uuid}, default=jsonReplace, ensure_ascii=False), self._remote_addr)
-            self.log_message("Socket Event " + name +
-                             "(" + str(uuid) + "): " + json.dumps(obj))
+            #self.log_message("Socket Event " + name +
+                            # "(" + str(uuid) + "): " + json.dumps(obj))
         except Exception, e:
             self._socket.sendto(json.dumps(
                 {"event": "error", "data": str(type(e).__name__) + ': ' + str(e.args), "uuid": uuid}, default=jsonReplace, ensure_ascii=False), self._remote_addr)
@@ -62,7 +62,7 @@ class Socket(object):
         try:
             while 1:
                 data = self._socket.recv(65536)
-                self.log_message(data)
+                #self.log_message(data)
                 if len(data) and self.input_handler:
                     payload = json.loads(data)
                     self.input_handler(payload)

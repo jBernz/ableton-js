@@ -44,7 +44,6 @@ class Interface(object):
             raise Exception("Listener " + str(prop) + " does not exist.")
 
         key = str(nsid) + prop
-        self.log_message("Add key: " + key)
         if self.listeners.has_key(key):
             return self.listeners[key]["id"]
 
