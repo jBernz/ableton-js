@@ -1,5 +1,6 @@
 from Interface import Interface
 from CuePoint import CuePoint
+from Data import Data
 from Scene import Scene
 from Track import Track
 
@@ -17,6 +18,9 @@ class Song(Interface):
 
     def get_clip_trigger_quantization(self, ns):
         return str(ns.clip_trigger_quantization)
+
+    def get_data(self, ns):
+        return map(Data.serialize_scene, ns)
 
     def get_midi_recording_quantization(self, ns):
         return str(ns.midi_recording_quantization)

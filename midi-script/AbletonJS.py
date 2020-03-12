@@ -2,6 +2,7 @@ import sys
 
 from Socket import Socket
 from CuePoint import CuePoint
+from Data import Data
 from Device import Device
 from DeviceParameter import DeviceParameter
 from Scene import Scene
@@ -24,6 +25,7 @@ class AbletonJS(ControlSurface):
         self.handlers = {
             "internal": Internal(c_instance, self.socket),
             "cue-point": CuePoint(c_instance, self.socket),
+            "data": Data(c_instance, self.socket),
             "device": Device(c_instance, self.socket),
             "device-parameter": DeviceParameter(c_instance, self.socket),
             "scene": Scene(c_instance, self.socket),
