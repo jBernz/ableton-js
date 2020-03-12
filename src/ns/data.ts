@@ -1,8 +1,13 @@
 import { Ableton } from "..";
 import { Namespace } from ".";
 
+interface loopData {
+    key_name: string;
+    color: string;
+}
+
 export interface GettableProperties {
-    loops: Object[];
+    loops: loopData[];
     fx: Object[];
     has_empty_loops: boolean;
 }
@@ -17,12 +22,12 @@ export interface ObservableProperties {
 }
 
 export interface RawData {
-    loops: Object[];
+    loops: loopData[];
     fx: Object[];
     has_empty_loops: boolean;
 }
 
-export class Scene extends Namespace<
+export class Data extends Namespace<
     GettableProperties,
     TransformedProperties,
     SettableProperties,

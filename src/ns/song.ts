@@ -4,6 +4,7 @@ import { Track, RawTrack } from "./track";
 import { CuePoint, RawCuePoint } from "./cue-point";
 import { SongView } from "./song-view";
 import { Scene, RawScene } from "./scene";
+import { Data, RawData } from "./data";
 
 export interface GettableProperties {
   arrangement_overdub: number;
@@ -17,6 +18,7 @@ export interface GettableProperties {
   count_in_duration: number;
   cue_points: RawCuePoint[];
   current_song_time: number;
+  data: RawData
   exclusive_arm: boolean;
   exclusive_solo: boolean;
   groove_amount: number;
@@ -56,6 +58,7 @@ export interface GettableProperties {
 
 export interface TransformedProperties {
   cue_points: CuePoint[];
+  data: Data
   master_track: Track;
   return_tracks: Track[];
   tracks: Track[];
@@ -113,7 +116,7 @@ export interface ObservableProperties {
   count_in_duration: number;
   cue_points: number;
   current_song_time: number;
-  data: number;
+  data: RawData;
   exclusive_arm: number;
   groove_amount: number;
   is_counting_in: boolean;
@@ -182,6 +185,7 @@ export class Song extends Namespace<
 
     this.transformers = {
       cue_points: points => points.map(c => new CuePoint(this.ableton, c)),
+      data: data => new Data(this.ableton, data),
       master_track: track => new Track(this.ableton, track),
       return_tracks: tracks => tracks.map(t => new Track(this.ableton, t)),
       tracks: tracks => tracks.map(t => new Track(this.ableton, t)),

@@ -12,15 +12,15 @@ class Data(Interface):
             'has_empty_loops': False
         }
 
-        data.id = Interface.save_obj(data)
+        data['id'] = Interface.save_obj(data)
 
         for scene in song.scenes:
             status = get_scene_status(scene)
             set_scene_color(scene, status, song)
-            if scene.name is 'loop[]':
-                data.has_empty_loops = True
+            if scene.name == 'loop[]':
+                data['has_empty_loops'] = True
             elif 'loop' in scene.name:
-                data.loops.append(parse_scene(scene))
+                data['loops'].append(parse_scene(scene, status))
         
         return data
 
@@ -72,13 +72,16 @@ def set_scene_color(scene, status, song):
         scene.color_index = 69
     if status == 'playing' or status == 'stopped':
         most_notes = 0
+        dominant_color = None
         for clip_slot in scene.clip_slots:
             if(clip_slot.has_clip):
                 clip_slot.clip.select_all_notes()
                 if len(clip_slot.clip.get_selected_notes()) > most_notes:
                     most_notes = len(clip_slot.clip.get_selected_notes())
-                    scene.color_index = clip_slot.clip.color_index
-                else:
-                    clip_slot.clip.color_index = scene.color_index
+                    dominant_color = clip_slot.clip.color_index
+        scene.color_index = dominant_color
+        for clip_slot in scene.clip_slots:
+            if(clip_slot.has_clip):
+                clip_slot.clip.color_index = dominant_color
         if scene.name in song.get_data('held_scene_names',[]):
             scene.color_index = 13

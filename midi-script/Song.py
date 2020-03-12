@@ -20,7 +20,7 @@ class Song(Interface):
         return str(ns.clip_trigger_quantization)
 
     def get_data(self, ns):
-        return map(Data.serialize_scene, ns)
+        return Data.serialize_data(ns)
 
     def get_midi_recording_quantization(self, ns):
         return str(ns.midi_recording_quantization)
