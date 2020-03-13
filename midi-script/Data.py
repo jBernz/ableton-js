@@ -21,6 +21,11 @@ class Data(Interface):
                 data['has_empty_loops'] = True
             elif 'loop' in scene.name:
                 data['loops'].append(parse_scene(scene, status))
+
+        for track in song.tracks:
+            if track.name == 'FX':
+                for device in track.devices:
+                    data['fx'].append(parse_fx(device, song.get_data('held_fx_names', [])))
         
         return data
 
@@ -85,3 +90,15 @@ def set_scene_color(scene, status, song):
                 clip_slot.clip.color_index = dominant_color
         if scene.name in song.get_data('held_scene_names',[]):
             scene.color_index = 13
+
+def parse_fx(device, held_device_names):
+    if device.name in held_device_names:
+        return {
+            'color': 'white',
+            'name': device.name
+        }
+    else:
+        return {
+            'color': 'dim-blue',
+            'name': device.name
+        }

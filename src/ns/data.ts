@@ -6,9 +6,14 @@ interface loopData {
     color: string;
 }
 
+interface fxData {
+    name: string;
+    color: string;
+}
+
 export interface GettableProperties {
     loops: loopData[];
-    fx: Object[];
+    fx: fxData[];
     has_empty_loops: boolean;
 }
 
@@ -23,7 +28,7 @@ export interface ObservableProperties {
 
 export interface RawData {
     loops: loopData[];
-    fx: Object[];
+    fx: fxData[];
     has_empty_loops: boolean;
 }
 
