@@ -9,6 +9,7 @@ class Data(Interface):
             'id': None,
             'loops': [],
             'fx': [],
+            'cbord': [],
             'has_empty_loops': False
         }
 
@@ -22,10 +23,22 @@ class Data(Interface):
             elif 'loop' in scene.name:
                 data['loops'].append(parse_scene(scene, status))
 
+        i = 1
         for track in song.tracks:
+
             if track.name == 'FX':
                 for device in track.devices:
                     data['fx'].append(parse_fx(device, song.get_data('held_fx_names', [])))
+
+            if track.name == 'MIDI_IN':
+                for chain in track.devices[0].chains:
+                    if chain.name == 'CBORD':
+                        color = color_index_map[track.color_index]
+                        if chain.mute:
+                            color = 'dim-' + color
+                        data['cbord'].append({'color': color, 'name': 'CB'+str(i)})
+                        i += 1
+
         
         return data
 
@@ -38,7 +51,9 @@ class Data(Interface):
 color_index_map = {
     9: 'blue',
     12: 'pink',
+    39: 'lavender',
     56: 'red',
+    61: 'green',
     69: 'dim-red',
     13: 'white'
 }
