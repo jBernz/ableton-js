@@ -8,6 +8,7 @@ from Track import Track
 class Song(Interface):
     def __init__(self, c_instance, socket):
         super(Song, self).__init__(c_instance, socket)
+        self.c_instance = c_instance
 
     def get_ns(self, nsid):
         return self.ableton.song()
@@ -20,7 +21,7 @@ class Song(Interface):
         return str(ns.clip_trigger_quantization)
 
     def get_data(self, ns):
-        return Data.serialize_data(ns)
+        return Data.serialize_data(ns, self.c_instance)
 
     def get_midi_recording_quantization(self, ns):
         return str(ns.midi_recording_quantization)
