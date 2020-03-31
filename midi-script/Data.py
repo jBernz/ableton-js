@@ -112,7 +112,7 @@ def get_loop_colors(statuses, c_instance):
     loops = []
     for name in statuses:
         if statuses[name]['type'] == 'loop' and not name == 'loop[]':
-            key_name = name[len('loop['):-len(']')]
+            key_name = name[name.find('[')+1:name.find(']')]
             color = None
             if statuses[name]['recording']:
                 color = 'red'
