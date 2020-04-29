@@ -21,6 +21,7 @@ class Data(Interface):
         data['loops'] = get_loop_colors(scene_statuses, c_instance)
         data['has_empty_loops'] = has_empty_loops(scene_statuses)
         data['cbord'] = get_cbord_colors(song)
+        data['fx'] = get_fx(song)
         
         return data
 
@@ -60,7 +61,7 @@ def get_scene_statuses(song):
             if clip_slot.is_playing:
                 statuses[scene.name]['playing'] = True
 
-            if(clip_slot.has_clip):
+            if(clip_slot.has_clip and clip_slot.clip.is_midi_clip):
                 clip_slot.clip.select_all_notes()
                 if len(clip_slot.clip.get_selected_notes()) > most_notes:
                     most_notes = len(clip_slot.clip.get_selected_notes())
@@ -105,7 +106,10 @@ color_index_map = {
     56: 'red',
     61: 'green',
     69: 'maroon',
-    13: 'white'
+    13: 'white',
+    59: 'gold',
+    1: 'orange',
+    20: 'teal'
 }
 
 def get_loop_colors(statuses, c_instance):
@@ -130,14 +134,26 @@ def get_cbord_colors(song):
     i = 1
     cbord = []
     for track in song.tracks:
-        if track.name == 'MIDI_IN' and track.input_routing_type.display_name == 'ALL_IN':
+        if track.name == 'CTRL_IN' and track.input_routing_type.display_name == 'ALL_IN':
             color = color_index_map[track.color_index]
             if track.arm == 1:
                 color = 'bright-' + color
             cbord.append({'color': color, 'name': 'CB'+str(i)})
             i += 1
     return cbord
-    
+
+
+def get_fx(song):
+    fx = []
+    for track in song.tracks:
+        if "GFX" in track.name:
+            fx.append({
+                'name': track.name,
+                'color': "bright-blue" if track.arm else "dim-blue"
+            })
+    return fx
+
+
 
 
 def has_empty_loops(statuses):
