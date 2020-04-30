@@ -72,17 +72,16 @@ def get_scene_statuses(song):
         if statuses[scene.name]['color']:
             statuses[scene.name]['empty'] = False
 
-            instrument_group = get_parent(song, song.tracks[n])
+            # instrument_group = get_parent(song, song.tracks[n])
 
-            if statuses[scene.name]['type'] == 'clip':
-                if instrument_group.name == song.get_data('selected_instrument_group', None):
-                    statuses[scene.name]['selected'] = True
+            # if statuses[scene.name]['type'] == 'clip':
+            #     if instrument_group.name == song.get_data('selected_instrument_group', None):
+            #         statuses[scene.name]['selected'] = True
 
-            elif statuses[scene.name]['type'] == 'loop':
-                statuses[scene.name]['type'] = 'loop'
+            if statuses[scene.name]['type'] == 'loop':
+                instrument_group = get_parent(song, song.tracks[n])
                 statuses[scene.name]['group_name'] = instrument_group.name
-                if instrument_group.name in song.get_data('selected_fx_groups', []):
-                    statuses[scene.name]['selected'] = True
+                statuses[scene.name]['selected'] = instr_group_is_as_selected(song, instrument_group)
                 
     return statuses
 
@@ -134,7 +133,7 @@ def get_cbord_colors(song):
     i = 1
     cbord = []
     for track in song.tracks:
-        if track.name == 'CTRL_IN' and track.input_routing_type.display_name == 'ALL_IN':
+        if track.name == 'CBORD_IN':
             color = color_index_map[track.color_index]
             if track.arm == 1:
                 color = 'bright-' + color
@@ -171,3 +170,15 @@ def get_parent(song, child_track):
         if track.is_foldable and not track.is_grouped:
             current_group = track
     return None
+
+
+def instr_group_is_as_selected(song, group_track):
+    within_group = False
+    for track in song.tracks:
+        if track.is_foldable and not track.is_grouped and within_group:
+            return False
+        if track.name == 'AS_IN' and track.arm == 1 and within_group:
+            return True
+        if track == group_track:
+            within_group = True
+    return False
