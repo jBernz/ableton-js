@@ -63,7 +63,7 @@ def get_scene_statuses(song):
 
             if(clip_slot.has_clip and clip_slot.clip.is_midi_clip):
                 clip_slot.clip.select_all_notes()
-                if len(clip_slot.clip.get_selected_notes()) > most_notes:
+                if len(clip_slot.clip.get_selected_notes()) > most_notes or clip_slot.clip.has_envelopes and most_notes == 0:
                     most_notes = len(clip_slot.clip.get_selected_notes())
                     n = i
                     statuses[scene.name]['color'] = clip_slot.clip.color_index
